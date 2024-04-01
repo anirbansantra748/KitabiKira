@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV != "production") {
-  require("dotenv").config();
+if (process.env.NODE_ENV != 'production') {
+  require('dotenv').config();
 }
 const express = require("express");
 const session = require("express-session");
@@ -10,11 +10,11 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const router = require("./routes/book");
 const path = require("path");
-const flash = require("connect-flash");
-const MongoStore = require("connect-mongo")(session); // Import and invoke connect-mongo here
+const flash = require('connect-flash');
 const app = express();
-const port = process.env.PORT || 3000; // Use process.env.PORT for Heroku compatibility
-const dbUrl = process.env.ATLASDB_URL || "mongodb://localhost:27017/BOOKSTORE"; // Provide a fallback URL if ATLASDB_URL is not set in environment
+const port = 3000;
+const dbUrl = process.env.ATLASDB_URL;
+const MongoStore = require('connect-mongo');
 
 // Set the path for views and static files
 app.set("views", path.join(__dirname, "views"));
@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate); // Use ejs-mate as the template engine
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+app.engine("ejs", ejsMate);
 
 // MongoDB Connection
 mongoose
