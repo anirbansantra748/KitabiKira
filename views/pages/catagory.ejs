@@ -1,0 +1,41 @@
+<% layout("/layouts/boilerplate") %>
+<main class="container py-5">
+    <h1>Explore Our Book Categories</h1>
+    <p class="lead">Discover a wide range of genres to ignite your reading passion.</p>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <template id="category-card">
+        <div class="col">
+          <div class="card h-100 shadow-sm rounded overflow-hidden">
+            <img src="placeholder.jpg" class="card-img-top" alt="Category Image"> <div class="card-body d-flex flex-column justify-content-between">
+              <h5 class="card-title"></h5> <p class="card-text"></p> <a href="#" class="stretched-link text-decoration-none">Explore Genre</a>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <script>
+        const categories = [
+        { title: "SearchGenre", description: "search your needed genre", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpixy.org%2Fsrc2%2F577%2F5775865.jpg&f=1&nofb=1&ipt=3fbae16c48728678778a6bbeff13d0b2e44ea436a43f162757f41d8fc4d2846a&ipo=images" },
+          { title: "Horror", description: "Spine-tingling tales to keep you up at night", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.N-9_GIsqOr2QDOojM8EllwAAAA%26pid%3DApi&f=1&ipt=bfd59896e1b1c0a06d222b3008b3e743f1f6c0b7a81fac7c57174d54ec7d4ee4&ipo=images" }, // Replace with image paths
+          { title: "Mystery", description: "Unravel captivating puzzles and thrilling secrets", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.MgtBKDdXwGzUzIjD4OEA8AHaEy%26pid%3DApi&f=1&ipt=00c49ba4f5486bccf6c7319c3961949a5aa64beb75f1b9f3c44fe8d642455240&ipo=images" },
+          { title: "Fantasy", description: "Escape into magical worlds brimming with adventure", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.qsSIm8QyYLzH2m6GOmXijAHaEK%26pid%3DApi&f=1&ipt=60b82d6e579feff1a455e324cb1e971538d109c089f8e9c8201438af31862d60&ipo=images" },
+          // Add more categories as needed
+        ];
+
+        const categoryTemplate = document.getElementById("category-card");
+        const cardContainer = document.querySelector(".row");
+
+        categories.forEach(category => {
+          const cardClone = categoryTemplate.content.cloneNode(true);
+          cardClone.querySelector(".card-title").textContent = category.title;
+          cardClone.querySelector(".card-text").textContent = category.description;
+          cardClone.querySelector(".card-img-top").src = category.image; 
+          cardClone.querySelector("a").href ="/home"; 
+          cardContainer.appendChild(cardClone);
+        });
+      </script>
+    </div>
+  </main>
+
+</body>

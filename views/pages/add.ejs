@@ -1,0 +1,117 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+  <div class="container mt-4">
+    <div class="card border-3 rounded shadow-lg p-3 mb-5 bg-white rounded">
+      <div class="row no-gutters">
+        <div class="col-md-4 mb-3 mb-md-0">
+          <img
+            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pixabay.com%2Fphoto%2F2015%2F08%2F09%2F13%2F21%2Fdoor-881588_960_720.jpg&f=1&nofb=1&ipt=b16d4cba38d5d0581630c4f7d05c53b84407f66ecd0a5696abc39fa0a6c6a404&ipo=images"
+            class="card-img img-fluid rounded"
+            alt="Book Photo"
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <form
+              action="/add"
+              method="POST"
+              novalidate
+              class="needs-validation"
+              enctype="multipart/form-data"
+            >
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="title" class="form-label fw-bold">Title:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Book[title]"
+                    name="Book[title]"
+                    placeholder="Enter the title"
+                    required
+                  />
+                  <div class="valid-feedback">Title looks good.</div>
+                  <div class="invalid-feedback">Enter a valid title!</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="genre" class="form-label fw-bold">Genre:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="Book[genre]"
+                    name="Book[genre]"
+                    placeholder="Enter the genre"
+                    required
+                  />
+                  <div class="valid-feedback">Genre looks good.</div>
+                  <div class="invalid-feedback">Enter a valid genre!</div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="author" class="form-label fw-bold">Author:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="Book[author]"
+                  name="Book[author]"
+                  placeholder="Enter the author"
+                  required
+                />
+                <div class="valid-feedback">Author looks good.</div>
+                <div class="invalid-feedback">Enter a valid author name!</div>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label fw-bold"
+                  >Description:</label
+                >
+                <textarea
+                  id="Book[description]"
+                  class="form-control"
+                  name="Book[description]"
+                  placeholder="Enter the description"
+                  rows="4"
+                  required
+                ></textarea>
+                <div class="valid-feedback">Description looks good.</div>
+                <div class="invalid-feedback">Enter a valid description!</div>
+              </div>
+              <div class="mb-3">
+                <label for="photo" class="form-label fw-bold"
+                  >Upload Book photo:</label
+                >
+                <input
+                  type="file"
+                  id="photo"
+                  class="form-control"
+                  name="photo"
+                  required
+                />
+                <div class="valid-feedback">Photo upload looks good.</div>
+                <div class="invalid-feedback">Upload a valid photo!</div>
+              </div>
+              <div class="mb-3">
+                <label for="pdf" class="form-label fw-bold">PDF Link:</label>
+                <input
+                  type="url"
+                  id="Book[pdf]"
+                  class="form-control"
+                  name="Book[pdf]"
+                  placeholder="Enter the PDF link"
+                  required
+                />
+                <div class="valid-feedback">PDF link looks good.</div>
+                <div class="invalid-feedback">Enter a valid PDF link!</div>
+              </div>
+              <div class="mb-3">
+                <button type="submit" class="btn btn-success col-12">
+                  Add Book
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
