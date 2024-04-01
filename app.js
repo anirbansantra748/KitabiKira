@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV != 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
 }
 const express = require("express");
 const session = require("express-session");
@@ -10,11 +10,11 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const router = require("./routes/book");
 const path = require("path");
-const flash = require('connect-flash');
+const flash = require("connect-flash");
+const MongoStore = require("connect-mongo")(session); // Import and invoke connect-mongo here
 const app = express();
-const port = 3000;
-const dbUrl = process.env.ATLASDB_URL;
-const MongoStore = require('connect-mongo');
+const port = process.env.PORT || 3000; // Use process.env.PORT for Heroku compatibility
+const dbUrl = process.env.ATLASDB_URL || "mongodb://localhost:27017/BOOKSTORE"; // Provide a fallback URL if ATLASDB_URL is not set in environment
 
 // Set the path for views and static files
 app.set("views", path.join(__dirname, "views"));
@@ -22,81 +22,69 @@ app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate); // Use ejs-mate as the template engine
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-app.engine("ejs", ejsMate);
 
-// MongoDB
-//const mongo_url = "mongodb://127.0.0.1:27017/BOOKSTORE";
-
-const store = MongoStore.create({
-  mongoUrl: dbUrl,
-  crypto: {
-    secret: process.env.SECRET,
-  },
-  touchAfter: 24 * 3600,
-});
-
-store.on("error", () => {
-  console.log("error in moongoose session", err);
-});
-
-async function main() {
-  await mongoose.connect(dbUrl);
-}
-
-main()
-  .then(() => {
-    console.log("Mongoose started");
+// MongoDB Connection
+mongoose
+  .connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true, // Add this option to suppress deprecation warning
   })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-store.on("error", () => {
-  console.log("error in moongoose session", err);
+// Session setup with MongoDB store
+const store = new MongoStore({
+  mongoUrl: dbUrl,
+  secret: process.env.SECRET,
+  touchAfter: 24 * 3600, // Set touchAfter interval (optional)
+});
+
+store.on("error", (err) => {
+  console.log("Error in MongoDB session store:", err);
 });
 
 // Session options
 const secOpt = {
   store,
   secret: process.env.SECRET,
-  resave: true, saveUninitialized: true,
+  resave: true,
+  saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7 * 24 * 3600 * 1000,
-    maxAge: 7 * 24 * 3600 * 1000,
+    maxAge: 7 * 24 * 3600 * 1000, // Set cookie maxAge (optional)
     httpOnly: true,
   },
 };
 
-
 // Middleware setup
 app.use(session(secOpt));
-app.use(flash())
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware for flash messages
 app.use((req, res, next) => {
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   res.locals.currUser = req.user;
   next();
 });
 
-
 // Passport LocalStrategy setup
 passport.use(new LocalStrategy(User.authenticate()));
-
 passport.serializeUser(User.serializeUser());
-
 passport.deserializeUser(User.deserializeUser());
 
+// Routes setup
 app.use("/", router);
 
+// Error handling middleware
 app.use((err, req, res, next) => {
-  const { statusCode = 500, message = 'Something went wrong!' } = err;
-  res.status(statusCode).render('pages/error.ejs', { err });
+  const { statusCode = 500, message = "Something went wrong!" } = err;
+  res.status(statusCode).render("pages/error.ejs", { err });
 });
 
+// Start the server
 app.listen(port, () => {
-  console.log("App is started");
+  console.log(`App is running on port ${port}`);
 });
